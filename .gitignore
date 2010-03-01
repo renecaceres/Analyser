@@ -1,2 +1,5 @@
 *.root
 *.o
+*.so
+*Dict.cxx
+*Dict.h
