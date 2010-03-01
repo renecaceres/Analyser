@@ -1,0 +1,40 @@
+INSTALLING GIT ON UBUNTU
+
+First you must create a free account in http://github.com. You also need a ssh
+key to connect to Git server, and instructions can be found in
+http://help.github.com/linux-key-setup/. Then in a terminal type:
+
+        $ sudo aptitude install git-core
+
+
+This install the git command line to manage your repositories. You must
+configure your setting:
+
+        $ git config --global user.name YOUR_USERNAME
+        $ git config --global user.email YOUR_MAIL
+
+
+Also it is recommended to set this, for dealing with line endings:
+
+        $ git config --global core.autocrlf input
+
+
+Now you can clone the Data_analisys repository. But first you must be added as
+collaborator, or you will not be able to push your changes. Go to your project
+path and type
+
+        $ git clone git@github.com:smancill/Data_analysis.git
+
+
+or if you prefer to change the directory name
+
+        $ git clone git@github.com:smancill/Data_analysis.git DIRECTORY_NAME
+
+
+Now you have a copy of the project in your local repo, and you can work with
+it. If you need help, you can see
+
+        http://help.github.com/
+        http://progit.org/book/
+        http://learn.github.com/
+        http://www.gitready.com/
