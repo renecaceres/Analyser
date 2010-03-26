@@ -1,0 +1,5 @@
+DCPB    drift chambers particle bank
+CCPB    cherenkov counters particle bank
+SCPB    scintillasion counters particle bank
+ECPB    electromagnetic counter particle bank
+EVNT
