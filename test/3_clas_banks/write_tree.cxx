@@ -12,51 +12,52 @@ int main(int argc, char **argv)
 {
     gROOT->Reset();
 
-    TClasTool *f = new TClasTool();
+    TClasTool *input = new TClasTool();
 
-    f->InitDSTReader("ROOTDSTR");
-    f->AddFile("clas_42011_01_1.pass2.root");
+    input->InitDSTReader("ROOTDSTR");
+    input->AddFile("clas_42011_01_1.pass2.root");
 
-    TIdentificator *t = new TIdentificator(f);
+    TIdentificator *t = new TIdentificator(input);
 
-    Int_t n = f->GetEntries();
+    Int_t nEntries = input->GetEntries();
 
-    TFile *file = new TFile("particle_data.root","RECREATE","Data of particles");
-    TTree *tree = new TTree("data","Tree that holds the data");
+    TFile *output = new TFile("particle_data.root", "RECREATE", "Data of particles");
+    TTree *tree = new TTree("data", "Tree that holds the data");
 
-    Double_t b, m;
-    Int_t id = 0;
+    Double_t betta, moment;
+    Int_t id;
 
-    tree->Branch("betta", &b, "b/D");
-    tree->Branch("moment", &m, "m/D");
+    tree->Branch("betta", &betta, "betta/D");
+    tree->Branch("moment", &moment, "moment/D");
     tree->Branch("particle", &id, "id/I");
 
-    f->Next();
+    input->Next();
 
-    for (Int_t k = 0; k < n; k++) {
-        Int_t nr = f->GetNRows("EVNT");
-        for (Int_t i = 0; i < nr; i++) {
-            if (t->GetCategorization(i) == "electron")
+    for (Int_t k = 0; k < nEntries; k++) {
+        Int_t nRows = input->GetNRows("EVNT");
+        for (Int_t i = 0; i < nRows; i++) {
+            TString category = t->GetCategorization(i);
+            if (category == "electron")
                 id = 1;
-            else if (t->GetCategorization(i) == "high energy pion +")
+            else if (category == "high energy pion +")
                 id = 2;
-            else if (t->GetCategorization(i) == "low energy pion +")
+            else if (category == "low energy pion +")
                 id = 3;
-            else if (t->GetCategorization(i) == "low energy proton")
+            else if (category == "low energy proton")
                 id = 4;
-            else if (t->GetCategorization(i) == "positron")
+            else if (category == "positron")
                 id = 5;
             else
                 id = 0;
-            m = t->Moment(i);
-            b = t->Betta(i);
+            moment = t->Moment(i);
+            betta = t->Betta(i);
             tree->Fill();
         }
-        f->Next();
+        input->Next();
     };
 
-    file->Write();
-    file->Close();
+    output->Write();
+    output->Close();
     cout << "Done." << endl;
     return 0;
 }
