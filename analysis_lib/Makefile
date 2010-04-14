@@ -5,7 +5,7 @@ include Makefile_top
 .SECONDARY: $(DICT_CLASS)
 .PHONY: all lib clean distclean checkdirs
 
-all: tags lib
+all: lib
 
 
 lib: checkdirs $(SLIB_DIR)/$(SH_LIB) 
