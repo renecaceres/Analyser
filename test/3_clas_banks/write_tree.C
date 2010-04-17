@@ -1,3 +1,4 @@
+void write_tree()
 {
     gSystem->Load("libClasBanks.so");
     gSystem->Load("libClasTool.so");

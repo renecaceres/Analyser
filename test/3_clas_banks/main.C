@@ -1,3 +1,4 @@
+void main ()
 {
     gSystem->Load("libClasBanks.so");
     gSystem->Load("libClasTool.so");
@@ -7,9 +8,11 @@
 
     input->InitDSTReader("ROOTDSTR");
     input->AddFile("clas_42011_01_1.pass2.root");
+
     TIdentificator *t = new TIdentificator(input);
+
+    Int_t nEntries = input->GetEntries();
     input->Next();
-    Int_t n = input->GetEntries();
 
     TH2F *h1 = new TH2F("electron_2d", "Betta vs Momentum", 1000, 0.0, 5.0, 50, 0.0, 1.2);
     TH2F *h2 = new TH2F("he_pion_2d", "Betta vs Momentum", 1000, 0.0, 5.0, 50, 0.0, 1.2);
