@@ -352,7 +352,7 @@ Double_t TIdentificator::Z(Int_t k) {
 
 
 
-Double_t TIdentificator::Pt2(Int_t k, Bool_t kind)
+Double_t TIdentificator::PTrans2PQ(Int_t k, Bool_t kind)
 {
     if (kind == 0)
         return Moment(k) * Moment(k) *
@@ -364,7 +364,7 @@ Double_t TIdentificator::Pt2(Int_t k, Bool_t kind)
 
 
 
-Double_t TIdentificator::Pt2Long(Int_t k, Bool_t kind)
+Double_t TIdentificator::PLong2PQ(Int_t k, Bool_t kind)
 {
     if (kind == 0)
         return Moment(k) * Moment(k) * CosThetaPq(k) * CosThetaPq(k);

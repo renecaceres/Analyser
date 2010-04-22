@@ -82,8 +82,8 @@ public:
     Double_t Y(Int_t);
     Double_t Z(Int_t);
 
-    Double_t Pt2(Int_t, Bool_t = 0);
-    Double_t Pt2Long(Int_t, Bool_t = 0);
+    Double_t PTrans2PQ(Int_t, Bool_t = 0);
+    Double_t PLong2PQ(Int_t, Bool_t = 0);
     Double_t CosThetaPq(Int_t, Bool_t = 0);
     Double_t Zpi(Int_t, Bool_t = 0, Double_t = 0.139);
 
