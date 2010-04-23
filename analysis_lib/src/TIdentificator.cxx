@@ -8,6 +8,7 @@ using namespace std;
 
 const Double_t kFidThetaMax = 54;
 
+//For theta_min calculation for electron
 const Double_t kThetaPar0[6] = {15        , 15        ,  15       , 15        ,  13       ,  13};
 const Double_t kThetaPar1[6] = {-0.425145 , -1.02217  , -0.7837   , -1.47798  ,   3.47361 ,   3.5714};
 const Double_t kThetaPar2[6] = {-0.666294 , -0.616567 , -0.673602 , -0.647113 ,  -0.34459 ,  -0.398458};
@@ -15,6 +16,7 @@ const Double_t kThetaPar3[6] = { 5.73077  ,  5.51799  ,  8.05224  ,  7.74737  , 
 const Double_t kThetaPar4[6] = {10.4976   , 14.0557   , 15.2178   , 16.7291   , -63.4556  , -22.649};
 const Double_t kThetaPar5[6] = {-1.13254  , -1.16189  , -2.08386  , -1.79939  ,  -3.3791  ,  -1.89746};
 
+//For parameter 0 of the phi_min calculation for electron
 const Double_t kFidPar0Low0[6] = {25     ,25       ,25       ,24.6345 ,23.4731 ,24.8599};
 const Double_t kFidPar0Low1[6] = {-12    ,-12      ,-12      ,-12     ,-12     ,-12};
 const Double_t kFidPar0Low2[6] = {0.5605 ,0.714261 ,0.616788 ,0.62982 ,1.84236 ,1.00513};
@@ -39,7 +41,7 @@ const Double_t kFidPar1High2[6] = {-2       ,-2           ,-1.70021   ,-1.27578 
 const Double_t kFidPar1High3[6] = {0.5      ,0.527823     ,0.68655    ,1.6       ,1.6       ,0.70261};
 
 
-ClassImp(TIdentificator);
+//ClassImp(TIdentificator);
 
 
 
@@ -58,17 +60,17 @@ TIdentificator::~TIdentificator()
 
 
 
-Double_t TIdentificator::Betta(Int_t k)
+Float_t TIdentificator::NEvent()
 {
-    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
-    return fEVNT->Betta;
+    return ((THEADERClass *) fCT->GetHEADER())->GetNEvent();
 }
 
 
 
-Float_t TIdentificator::NEvent()
+Double_t TIdentificator::Betta(Int_t k)
 {
-    return ((THEADERClass *) fCT->GetHEADER())->GetNEvent();
+    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
+    return fEVNT->Betta;
 }
 
 
@@ -90,188 +92,6 @@ Double_t TIdentificator::Charge(Int_t k)
 {
     fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
     return fEVNT->Charge;
-}
-
-
-
-Int_t TIdentificator::StatCC(Int_t k)
-{
-    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
-    return fEVNT->Ccstat;
-}
-
-
-
-Int_t TIdentificator::StatSC(Int_t k)
-{
-    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
-    return fEVNT->Scstat;
-}
-
-
-
-Int_t TIdentificator::StatDC(Int_t k)
-{
-    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
-    return fEVNT->Dcstat;
-}
-
-
-
-Int_t TIdentificator::StatEC(Int_t k)
-{
-    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
-    return fEVNT->Ecstat;
-}
-
-
-
-
-Double_t TIdentificator::Status(Int_t k)
-{
-    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
-    return fEVNT->Status;
-}
-
-
-
-Double_t TIdentificator::CCStatus(Int_t k)
-{
-    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
-
-    if (fEVNT->Ccstat >= 1) {
-        Int_t cc_stat = fEVNT->Ccstat - 1;
-        fCCPB = (TCCPBClass *) fCT->GetBankRow("CCPB", cc_stat);
-        return fCCPB->Status;
-    } else {
-        return kGOOD;
-    }
-}
-
-
-
-Double_t TIdentificator::SCStatus(Int_t k)
-{
-    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
-
-    if (fEVNT->Scstat >= 1) {
-        Int_t sc_stat = fEVNT->Scstat -1;
-        fSCPB = (TSCPBClass *) fCT->GetBankRow("SCPB", sc_stat);
-        return fSCPB->Status;
-    } else {
-        return kGOOD;
-    }
-}
-
-
-
-Double_t TIdentificator::ECStatus(Int_t k)
-{
-    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
-    if (fEVNT->Ecstat >= 1) {
-        Int_t ec_stat = fEVNT->Ecstat - 1;
-        fECPB = (TECPBClass *) fCT->GetBankRow("ECPB", ec_stat);
-        return fECPB->Status;
-    } else {
-        return kGOOD;
-    }
-}
-
-
-
-Double_t TIdentificator::DCStatus(Int_t k)
-{
-    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
-    if (fEVNT->Dcstat >= 1) {
-        Int_t dc_stat = fEVNT->Dcstat - 1;
-        fDCPB = (TDCPBClass *) fCT->GetBankRow("DCPB", dc_stat);
-        return fDCPB->Status;
-    } else {
-        return kGOOD;
-    }
-}
-
-
-
-Double_t TIdentificator::Moment(Int_t k, Bool_t kind)
-{
-    if (kind == 0) {
-        fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
-        return sqrt(fEVNT->Px * fEVNT->Px + fEVNT->Py * fEVNT->Py +
-                    fEVNT->Pz * fEVNT->Pz);
-    } else {                            // Fix this in case k != 1
-        fGSIM = (TGSIMClass *) fCT->GetBankRow("GSIM", k);
-        return sqrt(fGSIM->Px * fGSIM->Px + fGSIM->Py * fGSIM->Py +
-                    fGSIM->Pz * fGSIM->Pz);
-    }
-}
-
-
-
-Double_t TIdentificator::Mass2(Int_t k)
-{
-      return Moment(k) * Moment(k) * (pow(Betta(k), -2) - 1);
-}
-
-
-
-Double_t TIdentificator::Q2(Bool_t kind)
-{
-    if (kind == 0) {
-        return 4. * kEbeam * Moment(0) *
-                            sin(Theta(0)/2) * sin(Theta(0)/2);
-    } else {                            // Fix this in case k != 1
-        return 4. * kEbeam * Moment(0,1) *
-                            sin(Theta(0,1)/2) * sin(Theta(0,1)/2);
-    }
-}
-
-
-
-Double_t TIdentificator::W(Bool_t kind)
-{
-    if (kind == 0) {
-        return sqrt(0.938 * 0.938 + 2 * 0.938 * Nu() - Q2());
-    } else {                            // Fix this in case k != 1
-        return sqrt(0.938 * 0.938 + 2 * 0.938 * Nu(1) - Q2(1));
-    }
-}
-
-
-
-Double_t TIdentificator::Nu(Bool_t kind)
-{
-    if (kind == 0) {
-        return kEbeam - Moment(0);
-    } else {                            // Fix this in case k != 1
-        return kEbeam - Moment(0,1);
-    }
-}
-
-
-
-Double_t TIdentificator::Chi2CC(Int_t k)
-{
-    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
-
-    if (fEVNT->Ccstat >=1) {
-        Int_t cc_stat = fEVNT->Ccstat - 1;
-        fCCPB = (TCCPBClass *) fCT->GetBankRow("CCPB", cc_stat);
-        return fCCPB->Chi2cc;
-    } else {
-        return kGOOD;
-    }
-}
-
-
-
-Double_t TIdentificator::Theta(Int_t k, Bool_t kind)
-{
-    if (kind == 0) {
-        return acos(Pz(k) / Moment(k));
-    } else {                            // Fix this in case k != 1
-        return acos(Pz(k,1) / Moment(k,1));
-    }
 }
 
 
@@ -315,21 +135,6 @@ Double_t TIdentificator::Pz(Int_t k, Bool_t kind)
 
 
 
-Double_t TIdentificator::Nphe(Int_t k)
-{
-    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
-
-    if(fEVNT->Ccstat >= 1) {
-        Int_t ccst = fEVNT->Ccstat - 1;
-        fCCPB = (TCCPBClass *) fCT->GetBankRow("CCPB", ccst);
-        return fCCPB->Nphe;
-    } else {
-        return kGOOD;
-    }
-}
-
-
-
 Double_t TIdentificator::X(Int_t k)
 {
     fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
@@ -352,56 +157,160 @@ Double_t TIdentificator::Z(Int_t k) {
 
 
 
-Double_t TIdentificator::PTrans2PQ(Int_t k, Bool_t kind)
+Int_t TIdentificator::StatCC(Int_t k)
 {
-    if (kind == 0)
-        return Moment(k) * Moment(k) *
-                            (1 - CosThetaPq(k) * CosThetaPq(k));
-    else                                // Fix this in case k != 1
-        return Moment(k,1) * Moment(k,1) *
-                            (1 - CosThetaPq(k,1) * CosThetaPq(k,1));
+    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
+    return fEVNT->Ccstat;
 }
 
 
 
-Double_t TIdentificator::PLong2PQ(Int_t k, Bool_t kind)
+Int_t TIdentificator::StatSC(Int_t k)
 {
-    if (kind == 0)
-        return Moment(k) * Moment(k) * CosThetaPq(k) * CosThetaPq(k);
-    else                                // Fix this in case k != 1
-        return Moment(k,1) * Moment(k,1) * CosThetaPq(k,1) * CosThetaPq(k,1);
+    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
+    return fEVNT->Scstat;
 }
 
 
 
-//The angle between particle and virtual photon
-Double_t TIdentificator::CosThetaPq(Int_t k, Bool_t kind)
+Int_t TIdentificator::StatDC(Int_t k)
 {
-    if (kind == 0)
-        return (Pz(k) * (kEbeam - Pz(0)) - Px(k) * Px(0) - Py(k) * Py(0)) /
-                            (sqrt(Nu() * Nu() + Q2()) * Moment(k));
-    else                                // Fix this in case k != 1
-        return (Pz(k,1) * (kEbeam - Pz(0,1)) - Px(k,1) * Px(0,1) -
-                Py(k,1) * Py(0,1)) /
-                            (sqrt(Nu(1) * Nu(1) + Q2(1)) * Moment(k,1));
+    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
+    return fEVNT->Dcstat;
 }
 
 
 
-Double_t TIdentificator::Zpi(Int_t k, Bool_t kind, Double_t Mass)
+Int_t TIdentificator::StatEC(Int_t k)
 {
-    if (kind == 0)
-        return sqrt(Mass * Mass + Moment(k) * Moment(k)) / Nu(fCT);
-    else                                // Fix this in case k != 1
-        return sqrt(Mass * Mass + Moment(k,1) * Moment(k,1)) / Nu(1);
+    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
+    return fEVNT->Ecstat;
 }
 
 
 
-Double_t TIdentificator::TimeCorr4(Double_t mass, Int_t k)
+Double_t TIdentificator::Status(Int_t k)
 {
-    return (PathSC(0)/30.) - TimeSC(0) + TimeSC(k) - 0.08 -
-                (PathSC(k) / 30.) * sqrt(pow(mass/Moment(k),2) + 1);
+    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
+    return fEVNT->Status;
+}
+
+
+
+Double_t TIdentificator::Nphe(Int_t k)
+{
+    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
+
+    if(fEVNT->Ccstat >= 1) {
+        Int_t ccst = fEVNT->Ccstat - 1;
+        fCCPB = (TCCPBClass *) fCT->GetBankRow("CCPB", ccst);
+        return fCCPB->Nphe;
+    } else {
+        return kGOOD;
+    }
+}
+
+
+
+Double_t TIdentificator::Chi2CC(Int_t k)
+{
+    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
+
+    if (fEVNT->Ccstat >=1) {
+        Int_t cc_stat = fEVNT->Ccstat - 1;
+        fCCPB = (TCCPBClass *) fCT->GetBankRow("CCPB", cc_stat);
+        return fCCPB->Chi2cc;
+    } else {
+        return kGOOD;
+    }
+}
+
+
+
+Double_t TIdentificator::CCStatus(Int_t k)
+{
+    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
+
+    if (fEVNT->Ccstat >= 1) {
+        Int_t cc_stat = fEVNT->Ccstat - 1;
+        fCCPB = (TCCPBClass *) fCT->GetBankRow("CCPB", cc_stat);
+        return fCCPB->Status;
+    } else {
+        return kGOOD;
+    }
+}
+
+
+
+Double_t TIdentificator::DCStatus(Int_t k)
+{
+    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
+    if (fEVNT->Dcstat >= 1) {
+        Int_t dc_stat = fEVNT->Dcstat - 1;
+        fDCPB = (TDCPBClass *) fCT->GetBankRow("DCPB", dc_stat);
+        return fDCPB->Status;
+    } else {
+        return kGOOD;
+    }
+}
+
+
+
+Double_t TIdentificator::Etot(Int_t k)
+{
+    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
+
+    if (fEVNT->Ecstat >= 1) {
+        Int_t ec_stat= fEVNT->Ecstat - 1;
+        fECPB = (TECPBClass *) fCT->GetBankRow("ECPB", ec_stat);
+        return fECPB->Etot;
+    } else {
+        return kGOOD;
+    }
+}
+
+
+
+Double_t TIdentificator::Ein(Int_t k)
+{
+    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
+
+    if (fEVNT->Ecstat >= 1) {
+        Int_t ec_stat= fEVNT->Ecstat - 1;
+        fECPB = (TECPBClass *) fCT->GetBankRow("ECPB", ec_stat);
+        return fECPB->Ein;
+    } else {
+        return kGOOD;
+    }
+}
+
+
+
+Double_t TIdentificator::Eout(Int_t k)
+{
+    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
+
+    if (fEVNT->Ecstat >= 1) {
+        Int_t ec_stat= fEVNT->Ecstat - 1;
+        fECPB = (TECPBClass *) fCT->GetBankRow("ECPB", ec_stat);
+        return fECPB->Eout;
+    } else {
+        return kGOOD;
+    }
+}
+
+
+
+Double_t TIdentificator::ECStatus(Int_t k)
+{
+    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
+    if (fEVNT->Ecstat >= 1) {
+        Int_t ec_stat = fEVNT->Ecstat - 1;
+        fECPB = (TECPBClass *) fCT->GetBankRow("ECPB", ec_stat);
+        return fECPB->Status;
+    } else {
+        return kGOOD;
+    }
 }
 
 
@@ -451,14 +360,14 @@ Double_t TIdentificator::EdepSC(Int_t k)
 
 
 
-Double_t TIdentificator::Etot(Int_t k)
+Double_t TIdentificator::SCStatus(Int_t k)
 {
     fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
 
-    if (fEVNT->Ecstat >= 1) {
-        Int_t ec_stat= fEVNT->Ecstat - 1;
-        fECPB = (TECPBClass *) fCT->GetBankRow("ECPB", ec_stat);
-        return fECPB->Etot;
+    if (fEVNT->Scstat >= 1) {
+        Int_t sc_stat = fEVNT->Scstat -1;
+        fSCPB = (TSCPBClass *) fCT->GetBankRow("SCPB", sc_stat);
+        return fSCPB->Status;
     } else {
         return kGOOD;
     }
@@ -466,32 +375,124 @@ Double_t TIdentificator::Etot(Int_t k)
 
 
 
-Double_t TIdentificator::Ein(Int_t k)
+Double_t TIdentificator::Moment(Int_t k, Bool_t kind)
 {
-    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
-
-    if (fEVNT->Ecstat >= 1) {
-        Int_t ec_stat= fEVNT->Ecstat - 1;
-        fECPB = (TECPBClass *) fCT->GetBankRow("ECPB", ec_stat);
-        return fECPB->Ein;
-    } else {
-        return kGOOD;
+    if (kind == 0) {
+        fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
+        return sqrt(fEVNT->Px * fEVNT->Px + fEVNT->Py * fEVNT->Py +
+                    fEVNT->Pz * fEVNT->Pz);
+    } else {                            // Fix this in case k != 1
+        fGSIM = (TGSIMClass *) fCT->GetBankRow("GSIM", k);
+        return sqrt(fGSIM->Px * fGSIM->Px + fGSIM->Py * fGSIM->Py +
+                    fGSIM->Pz * fGSIM->Pz);
     }
 }
 
 
 
-Double_t TIdentificator::Eout(Int_t k)
+Double_t TIdentificator::Mass2(Int_t k)
 {
-    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
+      return Moment(k) * Moment(k) * (pow(Betta(k), -2) - 1);
+}
 
-    if (fEVNT->Ecstat >= 1) {
-        Int_t ec_stat= fEVNT->Ecstat - 1;
-        fECPB = (TECPBClass *) fCT->GetBankRow("ECPB", ec_stat);
-        return fECPB->Eout;
-    } else {
-        return kGOOD;
+
+
+Double_t TIdentificator::ThetaPQ(Int_t k, Bool_t kind)
+{
+    if (kind == 0) {
+        return acos(Pz(k) / Moment(k));
+    } else {                            // Fix this in case k != 1
+        return acos(Pz(k,1) / Moment(k,1));
     }
+}
+
+
+
+Double_t TIdentificator::CosThetaPQ(Int_t k, Bool_t kind)
+{
+    if (kind == 0)
+        return (Pz(k) * (kEbeam - Pz(0)) - Px(k) * Px(0) - Py(k) * Py(0)) /
+                            (sqrt(Nu() * Nu() + Q2()) * Moment(k));
+    else                                // Fix this in case k != 1
+        return (Pz(k,1) * (kEbeam - Pz(0,1)) - Px(k,1) * Px(0,1) -
+                Py(k,1) * Py(0,1)) /
+                            (sqrt(Nu(1) * Nu(1) + Q2(1)) * Moment(k,1));
+}
+
+
+
+Double_t TIdentificator::PTrans2PQ(Int_t k, Bool_t kind)
+{
+    if (kind == 0)
+        return Moment(k) * Moment(k) *
+                            (1 - CosThetaPQ(k) * CosThetaPQ(k));
+    else                                // Fix this in case k != 1
+        return Moment(k,1) * Moment(k,1) *
+                            (1 - CosThetaPQ(k,1) * CosThetaPQ(k,1));
+}
+
+
+
+Double_t TIdentificator::PLong2PQ(Int_t k, Bool_t kind)
+{
+    if (kind == 0)
+        return Moment(k) * Moment(k) * CosThetaPQ(k) * CosThetaPQ(k);
+    else                                // Fix this in case k != 1
+        return Moment(k,1) * Moment(k,1) * CosThetaPQ(k,1) * CosThetaPQ(k,1);
+}
+
+
+
+Double_t TIdentificator::Q2(Bool_t kind)
+{
+    if (kind == 0) {
+        return 4. * kEbeam * Moment(0) *
+                            sin(ThetaPQ(0)/2) * sin(ThetaPQ(0)/2);
+    } else {                            // Fix this in case k != 1
+        return 4. * kEbeam * Moment(0,1) *
+                            sin(ThetaPQ(0,1)/2) * sin(ThetaPQ(0,1)/2);
+    }
+}
+
+
+
+Double_t TIdentificator::W(Bool_t kind)
+{
+    if (kind == 0) {
+        return sqrt(0.938 * 0.938 + 2 * 0.938 * Nu() - Q2());
+    } else {                            // Fix this in case k != 1
+        return sqrt(0.938 * 0.938 + 2 * 0.938 * Nu(1) - Q2(1));
+    }
+}
+
+
+
+Double_t TIdentificator::Nu(Bool_t kind)
+{
+    if (kind == 0) {
+        return kEbeam - Moment(0);
+    } else {                            // Fix this in case k != 1
+        return kEbeam - Moment(0,1);
+    }
+}
+
+
+
+
+Double_t TIdentificator::ZhPi(Int_t k, Bool_t kind, Double_t Mass)
+{
+    if (kind == 0)
+        return sqrt(Mass * Mass + Moment(k) * Moment(k)) / Nu(fCT);
+    else                                // Fix this in case k != 1
+        return sqrt(Mass * Mass + Moment(k,1) * Moment(k,1)) / Nu(1);
+}
+
+
+
+Double_t TIdentificator::TimeCorr4(Double_t mass, Int_t k)
+{
+    return (PathSC(0)/30.) - TimeSC(0) + TimeSC(k) - 0.08 -
+                (PathSC(k) / 30.) * sqrt(pow(mass/Moment(k),2) + 1);
 }
 
 
@@ -593,52 +594,6 @@ Double_t TIdentificator::FidTheta(Int_t k, Bool_t kind)
 
 
 
-Double_t TIdentificator::FidPhi(Int_t k, Bool_t kind)
-{
-    Double_t fid_phi_val;
-
-    if (kind == 0) {
-        TVector3 v3p(Px(k), Py(k), Pz(k));
-        fid_phi_val = v3p.Phi() * 180 / TMath::Pi();
-    } else {
-        TVector3 v3p(Px(k,1), Py(k,1), Pz(k,1));
-        fid_phi_val = v3p.Phi() * 180 / TMath::Pi();
-    }
-
-    if (fid_phi_val < -30)
-        fid_phi_val += 360;
-    else if (fid_phi_val > 330)
-        fid_phi_val -= 360;
-
-    return fid_phi_val;
-}
-
-
-
-Int_t TIdentificator::FidSector(Int_t k, Bool_t kind)
-{
-    Int_t sector;
-
-    if (kind == 0) {
-        if (FidPhi(k) != 330) {
-            sector = int((FidPhi(k) + 90) / 60) - 1;
-            return sector;
-        } else {
-            return 5;
-        }
-    }
-    else {
-        if (FidPhi(k,1) != 330) {
-            sector = int((FidPhi(k,1) + 90) / 60) - 1;
-            return sector;
-        } else {
-            return 5;
-        }
-    }
-}
-
-
-
 Double_t TIdentificator::FidThetaMin()
 {
     Int_t sector = FidSector(0);
@@ -680,6 +635,28 @@ Double_t TIdentificator::FidFunc(Int_t side, Int_t param)
 
     return fid_func_val;
 }												
+
+
+
+Double_t TIdentificator::FidPhi(Int_t k, Bool_t kind)
+{
+    Double_t fid_phi_val;
+
+    if (kind == 0) {
+        TVector3 v3p(Px(k), Py(k), Pz(k));
+        fid_phi_val = v3p.Phi() * 180 / TMath::Pi();
+    } else {
+        TVector3 v3p(Px(k,1), Py(k,1), Pz(k,1));
+        fid_phi_val = v3p.Phi() * 180 / TMath::Pi();
+    }
+
+    if (fid_phi_val < -30)
+        fid_phi_val += 360;
+    else if (fid_phi_val > 330)
+        fid_phi_val -= 360;
+
+    return fid_phi_val;
+}
 
 
 
@@ -725,4 +702,28 @@ Bool_t TIdentificator::FidCheckCut()
         return 1;                               // Fiducial Cut passed
     else
         return 0;                               // Fiducial Cut not passed
+}
+
+
+
+Int_t TIdentificator::FidSector(Int_t k, Bool_t kind)
+{
+    Int_t sector;
+
+    if (kind == 0) {
+        if (FidPhi(k) != 330) {
+            sector = int((FidPhi(k) + 90) / 60) - 1;
+            return sector;
+        } else {
+            return 5;
+        }
+    }
+    else {
+        if (FidPhi(k,1) != 330) {
+            sector = int((FidPhi(k,1) + 90) / 60) - 1;
+            return sector;
+        } else {
+            return 5;
+        }
+    }
 }

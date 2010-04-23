@@ -36,18 +36,18 @@
 
 
 class TIdentificator {
-  
-  const Double_t kEbeam; // The energy of incoming electron beam
-  const Double_t kMpi; // The mass of the pion
-  const Double_t kGOOD; // The key for the exceptions (should be improved to avoid it at all !!!)
-  
-  TClasTool *fCT;
-  TEVNTClass *fEVNT;
-  TGSIMClass *fGSIM;
-  TCCPBClass *fCCPB;
-  TECPBClass *fECPB;
-  TSCPBClass *fSCPB;
-  TDCPBClass *fDCPB;
+protected:
+    const Double_t kEbeam;    // The energy of incoming electron beam
+    const Double_t kMpi;      // The mass of the pion
+    const Double_t kGOOD;     // The key for the exceptions (should be improved to avoid it at all !!!)
+
+    TClasTool *fCT;
+    TEVNTClass *fEVNT;
+    TGSIMClass *fGSIM;
+    TCCPBClass *fCCPB;
+    TECPBClass *fECPB;
+    TSCPBClass *fSCPB;
+    TDCPBClass *fDCPB;
   
 public:
     TIdentificator(TClasTool *);
@@ -101,10 +101,10 @@ public:
     Double_t PhiVirtLab(Bool_t = 0); // Check if it is correct !!!
     Double_t ThetaPQ(Int_t, Bool_t = 0);
     Double_t PhiPQ(Int_t, Bool_t = 0);
+    Double_t CosThetaPQ(Int_t, Bool_t = 0);
+    Double_t PTrans2PQ(Int_t, Bool_t = 0);
+    Double_t PLong2PQ(Int_t, Bool_t = 0);
     Double_t Sector(Int_t, Bool_t = 0); // Check if it is correct !!! Add k==1
-    Double_t CosThetaPq(Int_t, Bool_t = 0);
-    Double_t Pt2Trans(Int_t, Bool_t = 0);
-    Double_t Pt2Long(Int_t, Bool_t = 0);
 
     // Kinematic variables
     Double_t Q2(Bool_t = 0);
@@ -119,11 +119,14 @@ public:
     TString GetCategorization(Int_t);
 
     // Fiducial Cut
+    Double_t FidTheta(Int_t, Bool_t = 0);
     Double_t FidThetaMin();
     Double_t FidFunc(Int_t, Int_t);
+    Double_t FidPhi(Int_t, Bool_t = 0);
     Double_t FidPhiMin();
     Double_t FidPhiMax();
     Bool_t FidCheckCut();
+    Int_t FidSector(Int_t, Bool_t = 0);
 };
 
 #endif
