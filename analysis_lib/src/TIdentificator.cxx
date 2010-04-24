@@ -60,21 +60,6 @@ TIdentificator::~TIdentificator()
 
 
 
-Float_t TIdentificator::NEvent()
-{
-    return ((THEADERClass *) fCT->GetHEADER())->GetNEvent();
-}
-
-
-
-Double_t TIdentificator::Betta(Int_t k)
-{
-    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
-    return fEVNT->Betta;
-}
-
-
-
 Double_t TIdentificator::Id(Int_t k, Bool_t kind)
 {
     if (kind == 0) {
@@ -84,14 +69,6 @@ Double_t TIdentificator::Id(Int_t k, Bool_t kind)
         fGSIM = (TGSIMClass *) fCT->GetBankRow("GSIM", k);
         return fGSIM->Id;
     }
-}
-
-
-
-Double_t TIdentificator::Charge(Int_t k)
-{
-    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
-    return fEVNT->Charge;
 }
 
 
@@ -131,68 +108,6 @@ Double_t TIdentificator::Pz(Int_t k, Bool_t kind)
         fGSIM = (TGSIMClass *) fCT->GetBankRow("GSIM", k);
         return fGSIM->Pz;
     }
-}
-
-
-
-Double_t TIdentificator::X(Int_t k)
-{
-    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
-    return fEVNT->X;
-}
-
-
-
-Double_t TIdentificator::Y(Int_t k) {
-    fEVNT = (TEVNTClass*)fCT->GetBankRow("EVNT",k);
-    return fEVNT->Y;
-}
-
-
-
-Double_t TIdentificator::Z(Int_t k) {
-    fEVNT = (TEVNTClass*)fCT->GetBankRow("EVNT",k);
-    return fEVNT->Z;
-}
-
-
-
-Int_t TIdentificator::StatCC(Int_t k)
-{
-    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
-    return fEVNT->Ccstat;
-}
-
-
-
-Int_t TIdentificator::StatSC(Int_t k)
-{
-    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
-    return fEVNT->Scstat;
-}
-
-
-
-Int_t TIdentificator::StatDC(Int_t k)
-{
-    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
-    return fEVNT->Dcstat;
-}
-
-
-
-Int_t TIdentificator::StatEC(Int_t k)
-{
-    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
-    return fEVNT->Ecstat;
-}
-
-
-
-Double_t TIdentificator::Status(Int_t k)
-{
-    fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
-    return fEVNT->Status;
 }
 
 

@@ -54,23 +54,23 @@ public:
     ~TIdentificator();
 
     // HEADER bank
-    Float_t NEvent();
+    Float_t NEvent();                           //inline
 
     // EVNT bank
-    Double_t Betta(Int_t);
+    Double_t Betta(Int_t);                      //inline
     Double_t Id(Int_t, Bool_t = 0);
-    Double_t Charge(Int_t);
+    Double_t Charge(Int_t);                     //inline
     Double_t Px(Int_t, Bool_t = 0);
     Double_t Py(Int_t, Bool_t = 0);
     Double_t Pz(Int_t, Bool_t = 0);
-    Double_t X(Int_t);
-    Double_t Y(Int_t);
-    Double_t Z(Int_t);
-    Int_t StatCC(Int_t); // CCPB key
-    Int_t StatSC(Int_t); // SCPB key
-    Int_t StatDC(Int_t); // DCPB key
-    Int_t StatEC(Int_t); // ECPB key
-    Double_t Status(Int_t); // Event general status
+    Double_t X(Int_t);                          //inline
+    Double_t Y(Int_t);                          //inline
+    Double_t Z(Int_t);                          //inline
+    Int_t StatCC(Int_t);                        //inline - CCPB key
+    Int_t StatSC(Int_t);                        //inline - SCPB key
+    Int_t StatDC(Int_t);                        //inline - DCPB key
+    Int_t StatEC(Int_t);                        //inline - ECPB key
+    Double_t Status(Int_t);                     //inline - Event general status 
 
     // CCPB bank
     Double_t Nphe(Int_t);
@@ -122,5 +122,7 @@ public:
     Bool_t FidCheckCut();
     Int_t FidSector(Int_t, Bool_t = 0);
 };
+
+#include "TIdentificator_inlines.h"
 
 #endif
