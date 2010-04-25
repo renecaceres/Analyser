@@ -48,7 +48,7 @@ protected:
     TECPBClass *fECPB;
     TSCPBClass *fSCPB;
     TDCPBClass *fDCPB;
-  
+
 public:
     TIdentificator(TClasTool *);
     ~TIdentificator();
@@ -70,7 +70,7 @@ public:
     Int_t StatSC(Int_t);                        //inline - SCPB key
     Int_t StatDC(Int_t);                        //inline - DCPB key
     Int_t StatEC(Int_t);                        //inline - ECPB key
-    Double_t Status(Int_t);                     //inline - Event general status 
+    Double_t Status(Int_t);                     //inline - Event general status
 
     // CCPB bank
     Double_t Nphe(Int_t);
@@ -95,10 +95,16 @@ public:
     // Derived observables
     Double_t Moment(Int_t, Bool_t = 0);
     Double_t Mass2(Int_t);
+    Double_t ThetaLab(Int_t, Bool_t = 0);
+    Double_t PhiLab(Int_t, Bool_t = 0);
+    Double_t ThetaVirtLab(Bool_t = 0); // Check if it is correct !!!
+    Double_t PhiVirtLab(Bool_t = 0); // Check if it is correct !!!
     Double_t ThetaPQ(Int_t, Bool_t = 0);
+    Double_t PhiPQ(Int_t, Bool_t = 0);
     Double_t CosThetaPQ(Int_t, Bool_t = 0);
     Double_t PTrans2PQ(Int_t, Bool_t = 0);
     Double_t PLong2PQ(Int_t, Bool_t = 0);
+    Double_t Sector(Int_t, Bool_t = 0); // Check if it is correct !!! Add k==1
 
     // Kinematic variables
     Double_t Q2(Bool_t = 0);

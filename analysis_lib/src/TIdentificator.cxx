@@ -65,7 +65,7 @@ Double_t TIdentificator::Id(Int_t k, Bool_t kind)
     if (kind == 0) {
         fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
         return fEVNT->Id;
-    } else {                            // Fix this in case k != 1
+    } else {                            // Fix this in case kind != 1
         fGSIM = (TGSIMClass *) fCT->GetBankRow("GSIM", k);
         return fGSIM->Id;
     }
@@ -78,7 +78,7 @@ Double_t TIdentificator::Px(Int_t k, Bool_t kind)
     if (kind == 0) {
         fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
         return fEVNT->Px;
-    } else {                            // Fix this in case k != 1
+    } else {                            // Fix this in case kind != 1
         fGSIM = (TGSIMClass *) fCT->GetBankRow("GSIM", k);
         return fGSIM->Px;
     }
@@ -91,7 +91,7 @@ Double_t TIdentificator::Py(Int_t k, Bool_t kind)
     if (kind == 0) {
         fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
         return fEVNT->Py;
-    } else {                            // Fix this in case k != 1
+    } else {                            // Fix this in case kind != 1
         fGSIM = (TGSIMClass *) fCT->GetBankRow("GSIM", k);
         return fGSIM->Py;
     }
@@ -104,7 +104,7 @@ Double_t TIdentificator::Pz(Int_t k, Bool_t kind)
     if (kind == 0) {
         fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
         return fEVNT->Pz;
-    } else {                            // Fix this in case k != 1
+    } else {                            // Fix this in case kind != 1
         fGSIM = (TGSIMClass *) fCT->GetBankRow("GSIM", k);
         return fGSIM->Pz;
     }
@@ -296,7 +296,7 @@ Double_t TIdentificator::Moment(Int_t k, Bool_t kind)
         fEVNT = (TEVNTClass *) fCT->GetBankRow("EVNT", k);
         return sqrt(fEVNT->Px * fEVNT->Px + fEVNT->Py * fEVNT->Py +
                     fEVNT->Pz * fEVNT->Pz);
-    } else {                            // Fix this in case k != 1
+    } else {                            // Fix this in case kind != 1
         fGSIM = (TGSIMClass *) fCT->GetBankRow("GSIM", k);
         return sqrt(fGSIM->Px * fGSIM->Px + fGSIM->Py * fGSIM->Py +
                     fGSIM->Pz * fGSIM->Pz);
@@ -312,13 +312,111 @@ Double_t TIdentificator::Mass2(Int_t k)
 
 
 
+Double_t TIdentificator::ThetaLab(Int_t k, Bool_t kind)
+{
+    Double_t theta;
+
+    if (kind == 0) {
+        theta = acos(Pz(k) / Moment(k));
+    } else {                            // Fix this in case kind != 1
+        theta = acos(Pz(k,1) / Moment(k,1));
+    }
+
+    return theta;
+}
+
+
+
+Double_t TIdentificator::PhiLab(Int_t k, Bool_t kind)
+{
+    Double_t phi;
+
+    if (kind == 0) {
+        if (Py(k) >= 0 && Px(k) >= 0)     phi =   fabs(57.3 * atan(Px(k) / Py(k)));
+        else if (Py(k) >= 0 && Px(k) < 0) phi = - fabs(57.3 * atan(Px(k) / Py(k)));
+        else if (Py(k) < 0 && Px(k) >= 0) phi =  180 - fabs(57.3 * atan(Px(k) / Py(k)));
+        else                              phi = -180 + fabs(57.3 * atan(Px(k) / Py(k)));
+    } else {                            // Fix this in case kind != 1
+        if (Py(k,1) >= 0 && Px(k,1) >= 0)     phi =   fabs(57.3 * atan(Px(k,1) / Py(k,1)));
+        else if (Py(k,1) >= 0 && Px(k,1) < 0) phi = - fabs(57.3 * atan(Px(k,1) / Py(k,1)));
+        else if (Py(k,1) < 0 && Px(k,1) >= 0) phi =  180 - fabs(57.3 * atan(Px(k,1) / Py(k,1)));
+        else                                  phi = -180 + fabs(57.3 * atan(Px(k,1) / Py(k,1)));
+    }
+
+    return phi;
+}
+
+
+
+Double_t TIdentificator::ThetaVirtLab(Bool_t kind) // Check if it is correct !!!
+{
+    Double_t theta_virt;
+
+    if (kind == 0) {
+        theta_virt = acos((kEbeam - Moment(0) * cos(ThetaLab(0))) /
+                           (sqrt(Q2() + Nu() * Nu())));
+    } else {                            // Fix this in case kind != 1
+        theta_virt = acos((kEbeam - Moment(0,1) * cos(ThetaLab(0,1))) /
+                           (sqrt(Q2(1) + Nu(1) * Nu(1))));
+    }
+
+    return theta_virt;
+}
+
+
+
+Double_t TIdentificator::PhiVirtLab(Bool_t kind) // Check if it is correct !!!
+{
+    Double_t phi_virt;
+
+    if (PhiLab(0,kind) > 0) phi_virt = - 180 + PhiLab(0,kind);
+    else phi_virt = 180 + PhiLab(0,kind);
+
+    return phi_virt;
+}
+
+
+
 Double_t TIdentificator::ThetaPQ(Int_t k, Bool_t kind)
 {
     if (kind == 0) {
         return acos(Pz(k) / Moment(k));
-    } else {                            // Fix this in case k != 1
+    } else {                            // Fix this in case kind != 1
         return acos(Pz(k,1) / Moment(k,1));
     }
+}
+
+
+
+Double_t TIdentificator::PhiPQ(Int_t k, Bool_t kind)
+{
+    Double_t phi_pq;
+
+    if (kind == 0) {
+        TVector3 vpi(Px(k), Py(k), Pz(k));
+        TVector3 vvirt(-Px(0), -Py(0), kEbeam - Pz(0));
+        Double_t phi_z = TMath::Pi() - vvirt.Phi();
+        vvirt.RotateZ(phi_z);
+        vpi.RotateZ(phi_z);
+        TVector3 vhelp(0., 0., 1.);
+        Double_t phi_y = vvirt.Angle(vhelp);
+        vvirt.RotateY(phi_y);
+        vpi.RotateY(phi_y);
+        phi_pq = vpi.Phi() * 180 / (TMath::Pi());
+    } else {                            // Fix this in case kind != 1
+        TVector3 vpi(Px(k,1), Py(k,1), Pz(k,1));
+        TVector3 vvirt(-Px(0,1), -Py(0,1), kEbeam - Pz(0,1));
+        Double_t phi_z = TMath::Pi() - vvirt.Phi();
+        vvirt.RotateZ(phi_z);
+        vpi.RotateZ(phi_z);
+        TVector3 vhelp(0., 0., 1.);
+        Double_t phi_y = vvirt.Angle(vhelp);
+        vvirt.RotateY(phi_y);
+        vpi.RotateY(phi_y);
+        phi_pq = vpi.Phi() * 180 / (TMath::Pi());
+    }
+
+    return phi_pq;
 }
 
 
@@ -328,7 +426,7 @@ Double_t TIdentificator::CosThetaPQ(Int_t k, Bool_t kind)
     if (kind == 0)
         return (Pz(k) * (kEbeam - Pz(0)) - Px(k) * Px(0) - Py(k) * Py(0)) /
                             (sqrt(Nu() * Nu() + Q2()) * Moment(k));
-    else                                // Fix this in case k != 1
+    else                                // Fix this in case kind != 1
         return (Pz(k,1) * (kEbeam - Pz(0,1)) - Px(k,1) * Px(0,1) -
                 Py(k,1) * Py(0,1)) /
                             (sqrt(Nu(1) * Nu(1) + Q2(1)) * Moment(k,1));
@@ -341,7 +439,7 @@ Double_t TIdentificator::PTrans2PQ(Int_t k, Bool_t kind)
     if (kind == 0)
         return Moment(k) * Moment(k) *
                             (1 - CosThetaPQ(k) * CosThetaPQ(k));
-    else                                // Fix this in case k != 1
+    else                                // Fix this in case kind != 1
         return Moment(k,1) * Moment(k,1) *
                             (1 - CosThetaPQ(k,1) * CosThetaPQ(k,1));
 }
@@ -352,8 +450,23 @@ Double_t TIdentificator::PLong2PQ(Int_t k, Bool_t kind)
 {
     if (kind == 0)
         return Moment(k) * Moment(k) * CosThetaPQ(k) * CosThetaPQ(k);
-    else                                // Fix this in case k != 1
+    else                                // Fix this in case kind != 1
         return Moment(k,1) * Moment(k,1) * CosThetaPQ(k,1) * CosThetaPQ(k,1);
+}
+
+
+
+Double_t TIdentificator::Sector(Int_t k, Bool_t kind) // Check if it is correct !!! Add k==1
+{
+    const Double_t r2d = 57.2957795;
+
+    Double_t pex = Px(k);
+    Double_t pey = Py(k);
+    Double_t phi = TMath::ATan2(pey,pex) * r2d;
+
+    if (phi >= -30) phi = phi+30;
+    else phi = phi + 390;
+    return int(phi / 60.);
 }
 
 
@@ -363,7 +476,7 @@ Double_t TIdentificator::Q2(Bool_t kind)
     if (kind == 0) {
         return 4. * kEbeam * Moment(0) *
                             sin(ThetaPQ(0)/2) * sin(ThetaPQ(0)/2);
-    } else {                            // Fix this in case k != 1
+    } else {                            // Fix this in case kind != 1
         return 4. * kEbeam * Moment(0,1) *
                             sin(ThetaPQ(0,1)/2) * sin(ThetaPQ(0,1)/2);
     }
@@ -375,7 +488,7 @@ Double_t TIdentificator::W(Bool_t kind)
 {
     if (kind == 0) {
         return sqrt(0.938 * 0.938 + 2 * 0.938 * Nu() - Q2());
-    } else {                            // Fix this in case k != 1
+    } else {                            // Fix this in case kind != 1
         return sqrt(0.938 * 0.938 + 2 * 0.938 * Nu(1) - Q2(1));
     }
 }
@@ -386,7 +499,7 @@ Double_t TIdentificator::Nu(Bool_t kind)
 {
     if (kind == 0) {
         return kEbeam - Moment(0);
-    } else {                            // Fix this in case k != 1
+    } else {                            // Fix this in case kind != 1
         return kEbeam - Moment(0,1);
     }
 }
@@ -398,7 +511,7 @@ Double_t TIdentificator::ZhPi(Int_t k, Bool_t kind, Double_t Mass)
 {
     if (kind == 0)
         return sqrt(Mass * Mass + Moment(k) * Moment(k)) / Nu(fCT);
-    else                                // Fix this in case k != 1
+    else                                // Fix this in case kind != 1
         return sqrt(Mass * Mass + Moment(k,1) * Moment(k,1)) / Nu(1);
 }
 
