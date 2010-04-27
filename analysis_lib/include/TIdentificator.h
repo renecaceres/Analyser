@@ -129,6 +129,6 @@ public:
     Int_t FidSector(Int_t, Bool_t = 0);
 };
 
-#include "TIdentificator_inlines.h"
+#include "TIdentificator.icc"
 
 #endif
