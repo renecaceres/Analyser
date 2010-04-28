@@ -27,7 +27,7 @@ MAIN_SRC = MainEvent.cxx
 
 .PHONY: all lib clean distclean
 
-all: tags $(EVENT)
+all: $(EVENT)
 
 lib: $(EVENT_SO)
 
