@@ -7,7 +7,7 @@ make to the code must be according to the established rules. A complete guide
 about this can be found in the [`coding_conventions.md`][coding] file.
 
 The mailing list (to be created soon) will be the official source of
-information and communication within developers and the maintainer.
+information and communication between the developers and the maintainer.
 
 Please **use** the [wiki][wiki]. It is a good place to put information that
 everyone must know, and it can be checked anytime. A very good use will be
