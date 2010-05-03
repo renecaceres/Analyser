@@ -6,6 +6,7 @@
 echo Converting from Markdown to LaTeX
 pandoc --no-wrap -f markdown -t latex ../using_git.md > pandoc_output.tex
 
+sed -i 's+http://github.com/usm-data-analysis/Analyser/raw/master/doc/++' pandoc_output.tex
 sed -i 's/includegraphics/img/' pandoc_output.tex
 sed -i '/This is the workflow we are going to use/i begin{quote}' pandoc_output.tex
 sed -i '/This is the workflow we are going to use/a end{quote}' pandoc_output.tex

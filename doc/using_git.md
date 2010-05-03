@@ -38,9 +38,7 @@ their repository. The process works as follow:
 5. The maintainer adds the contributor's repo as a remote and merges locally.
 6. The maintainer pushes merged changes to the main repository.
 
-<center>
-![Workflow](img/imw.png "Integration-Manager workflow")
-</center>
+![Workflow](http://github.com/usm-data-analysis/Analyser/raw/master/doc/img/imw.png "Integration-Manager workflow")
 
 One of the main advantages of this approach is that you can continue working,
 and the maintainer of the main repository can pull in your changes at any
@@ -82,9 +80,7 @@ The first thing you must do is to create your fork of the
 [`Analyser`][analysis-repo] repository. To do this, you just simply click the
 *fork* button on the project's page
 
-<center>
-![Fork Button](img/fork-button.jpg "Fork Button")
-</center>
+![Fork Button](http://github.com/usm-data-analysis/Analyser/raw/master/doc/img/fork-button.jpg "Fork Button")
 
 When the process is finished, you have a repository in your account named
 `Analyser`. This is your own public repository, your fork (copy) of the
@@ -158,9 +154,7 @@ After you've pushed your commit(s) you need to inform the integration manager
 of the changes so he can pull them into the blessed repo. From your project's
 page, click the *pull request* button.
 
-<center>
-![Pull-request](img/pull-request.png)
-</center>
+![Pull-request](http://github.com/usm-data-analysis/Analyser/raw/master/doc/img/pull-request.png)
 
 Fill in a note and pick who to send the request to (it should be the user
 `usm-data-analysis`).
@@ -277,26 +271,20 @@ The object database contains four types of objects:
 
 Conceptually, the data in your Git repository looks something like this:
 
-<center>
-![Objects](img/objects-example.png "Stored objects in git")
-</center>
+![Objects](http://github.com/usm-data-analysis/Analyser/raw/master/doc/img/objects-example.png "Stored objects in git")
 
 If you make some changes and commit again, the next commit stores a pointer to
 the commit that came immediately before it. After two more commits, your
 history might look something like this:
 
-<center>
-![Commits](img/commits-example.png)
-</center>
+![Commits](http://github.com/usm-data-analysis/Analyser/raw/master/doc/img/commits-example.png)
 
 A branch in Git is simply a lightweight movable pointer to one of these
 commits. The default branch name in Git is `master`. As you initially make
 commits, you're given a master branch that points to the last commit you made.
 Every time you commit, it moves forward automatically.
 
-<center>
-![Commits](img/master.png)
-</center>
+![Commits](http://github.com/usm-data-analysis/Analyser/raw/master/doc/img/master.png)
 
 ## Setting up a repository
 
@@ -341,9 +329,7 @@ file but have not committed it to your database yet. Staged means that you
 have marked a modified file in its current version to go into your next commit
 snapshot (the file is in the index).
 
-<center>
-![File states](img/states.png)
-</center>
+![File states](http://github.com/usm-data-analysis/Analyser/raw/master/doc/img/states.png)
 
 The basic Git workflow goes something like this:
 
@@ -781,9 +767,7 @@ Any commit can be used as the starter point of a branch.
 Now go through the usual edit/commit cycle. Your changes will go onto the new
 branch, and it will look like this:
 
-<center>
-![Branch example](img/branch-example.png)
-</center>
+![Branch example](http://github.com/usm-data-analysis/Analyser/raw/master/doc/img/branch-example.png)
 
 Because a branch in Git is in actuality a simple file that contains the 40
 character SHA-1 checksum of the commit it points to, branches are cheap to
@@ -952,9 +936,7 @@ A good explanation about remote branches is found
 
 The [Analyser][analysis-repo] repository has the following branching model:
 
-<center>
-![Branching model](img/branching-model.png)
-</center>
+![Branching model](http://github.com/usm-data-analysis/Analyser/raw/master/doc/img/branching-model.png)
 
 * Only code that is entirely stable will be in the `master` branch, possibly
   code that has been or will be released.
