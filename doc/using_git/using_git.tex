@@ -1,0 +1,30 @@
+\documentclass[letterpaper,11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{verbatim}
+\usepackage{framed,color}
+\usepackage[pdftex,%
+            pdftitle={Using Git},%
+            pdfauthor={USM Data Analysis},%
+            colorlinks=false]{hyperref}
+
+\oddsidemargin 0in \topmargin 0in \textwidth 6.5in \textheight 8.5in
+
+\definecolor{shadecolor}{gray}{0.90}
+
+\newcommand{\img}[1]{\begin{figure}[htbp!]
+	\centering\includegraphics[width=0.5\textwidth]{../#1}
+\end{figure}}
+
+\title{Using Git}
+\author{USM Data Analysis Project}
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\include{pandoc_output}
+
+\end{document}
