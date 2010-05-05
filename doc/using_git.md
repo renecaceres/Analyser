@@ -6,8 +6,9 @@ You **must** follow the coding conventions for the project. Every change you
 make to the code must be according to the established rules. A complete guide
 about this can be found in the [`coding_conventions.md`][coding] file.
 
-The mailing list (to be created soon) will be the official source of
-information and communication between the developers and the maintainer.
+The mailing list ([USM FIS Data Analysis Team][list]) will be the official
+source of information and communication between the developers and the
+maintainer.
 
 Please **use** the [wiki][wiki]. It is a good place to put information that
 everyone must know, and it can be checked anytime. A very good use will be
@@ -1411,3 +1412,4 @@ If you need more extensive help, you can see
 [coding]: http://github.com/usm-data-analysis/Analyser/blob/master/doc/coding_conventions.md "Coding Conventions"
 [wiki]: http://wiki.github.com/usm-data-analysis/Analyser "Analyser wiki"
 [issues]: http://github.com/usm-data-analysis/Analyser/issues "Analyser issues"
+[list]: http://groups.google.com/group/usm-fis-data-analysis "Mailing List"
