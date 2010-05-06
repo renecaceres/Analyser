@@ -1022,10 +1022,10 @@ rewrite the commit history.
 Here are some examples of commit messages for some unrelated changes that
 should not be committed in the same commit object would be:
 
-    * Converted all line endings to CRLF in the complete code base
-    * Documented the methods of Class XY
-    * Fixed TestcaseXY so that it now passes
-    * Added a new Feature to the UI, description follows: ...
+* Converted all line endings to CRLF in the complete code base
+* Documented the methods of Class XY
+* Fixed TestcaseXY so that it now passes
+* Added a new Feature to the UI, description follows: ...
 
 
 ### Publishing your contribution
@@ -1045,7 +1045,7 @@ errors are most easily fixed in yet unpublished changes!
 
 If everything is OK, publish the commits to your public GitHub repository.
 
-    $ git push origin master
+    $ git push origin develop
 
 Now that your commit is published, it doesn't mean that it has already been
 merged into the main repository. You should issue a merge request to one of
@@ -1100,8 +1100,7 @@ erroneous commit's changes but not by fixing the commit object directly.
 In your private repository you are god. You can completely rewrite the
 history, but you shouldn't touch commits that have already been published and
 merged into the main repository. Otherwise you will suffer heavily next time
-you pull ;) or you cause others a lot of trouble when theiy want to pull from
-you.
+you pull or you cause others a lot of trouble when they want to pull from you.
 
 Exemplary errors and fixes are:
 
@@ -1109,12 +1108,11 @@ Exemplary errors and fixes are:
 * Commited too much, like to split up into multiple commits --> Soft Reset
 * Things went so wrong that you want to throw some commits away --> Hard Reset
 
-Note: Before you play god, be careful! If you rewrite history which has
-already been pushed remote then you need to force overwriting the remote
-history or you won't be able to push again. See correcting errors in your
-public repo. If the commits you want to discard have already been propagated
-into other's repositories then you will probably cause a lot of trouble!
-
+> If you rewrite history which has already been pushed remote then you need to
+> force overwriting the remote history or you won't be able to push again. See
+> correcting errors in your public repo. If the commits you want to discard
+> have already been propagated into other's repositories then you will
+> probably cause a lot of trouble.
 
 ### Correcting errors in your public remote repository
 
@@ -1127,55 +1125,122 @@ First of all, fix your local repository as described in the previous section.
 After that you can force your public repository to the new revision history.
 If the public repository is configured to allow forced pushes then simply do:
 
-    git push -f origin master
+    git push -f origin develop
 
 If the remote repository rejects a forced push there is still a trick, but it
 might take a little longer for big repositories (so beware):
 
-    git push origin :master
-    git push origin master
+    git push origin :develop
+    git push origin develop
 
 To understand what's happening here you should know that push allows to push
 from one branch to the other with the following notation
-`local_branch:remote_branch`. A normal git push origin master is a shortcut for
-git push origin master:master. If you leave the local branch blank it will
+`local_branch:remote_branch`. A normal `git push origin develop` is a shortcut for
+`git push origin develop:develop`. If you leave the local branch blank it will
 delete the remote branch. The second push will then recreate it and transport
 your complete rewritten revision history to the remote repository.
-[edit] Correcting errors that are already merged upstream
 
 ## Normal workflow
 
+As said, all development work is done under the `develop` branch. So, you
+should check you have a `develop` local branch:
+
+    S git branch
+
+    * master
+      develop
+
+If you don't, you can use the upstream development branch to start your own.
+First check the remote branches (if you don't have the `upstream` remote
+repository, read *Following the official Analyser repository* almost at the
+beginning of this guide):
+
+    S git branch -r
+
+    origin/master
+    upstream/develop
+    upstream/master
+
+Do this to create your local branch (where you will work):
+
+    $ git checkout -b develop upstream/develop
+
+Also make sure you push that local branch to your public repository, so
+everyone can see it:
+
+    $ git push origin develop
+
 ### Before start
 
-Make sure you have your fork up-to-date and your working tree is clear.
-Suppose this is your local repo
+Make sure you have your fork up-to-date and your working tree is clear. You
+already have read about how to get the last changes from the upstream
+repository. Suppose this is your local repo
 
-        o---o---o                     master
+        o---o---o                    master - origin/master - upstream/develop
                  \
-                  o---o---o---o       develop
-                           \
-                            o---o     topic
+                  o---o              upstream/develop
+                       \
+                        o---o        develop - origin/develop
+                         \
+                          o---o      topic
+
+This means you have not done anything since the last time you pushed to your
+GitHub (public) repository, so your local branches and your branches from
+`origin` point to the same commits. Also it means you don't know if the
+integrator manager have accepted your changes, because the `upstream` branches
+are behind your local branches (this also means you have not updated from
+`upstream` since you started the work that you already published).
 
 You can use this command to get the commits from the upstream repo that you
 don't have yet
 
     $ git fetch upstream
+
+And when it finish, you have all the last commits of the `usm-data-analysis`'s
+repo, and the remote branches  `upstream/master` and `upstream/develop` point
+to them (in this example `upstream/develop` has your commits, so the
+integration-manager accepted them, and also it has two new commits from
+someone else):
+
+        o---o---o                        master - upstream/master  #nothing new
+                 \
+                  \               o---o  upstream/develop
+                   \             /
+                    o---o---o---o        develop
+                             \
+                              o---o      topic
+
+To see the new changes and the differences with the local branches, read below
+*Keeping your clone up-to-date*. Now you can integrate the others' changes
+into your local `develop` branch. But first, you must be sure you are in the
+`develop` branch (remember, all the work is done under this branch, or in some
+*topic/feature* branch than you will merge to this one later):
+
+    $ git branch
+
+If you are not, then switch to it:
+
     $ git checkout develop
+
+and do a fast-forward merge (this mean your branch is contained by
+`origin/develop`, so the `develop` pointer advances to the commit on the tip):
+
     $ git merge upstream/develop
 
-This should be a fast-forward merge, because if you have not updated, other
-developers could send their work in the meantime and `upstream/develop` is
-ahead of your `origin/develop` branch.
+The result is this:
 
-        o---o---o                                 master
+        o---o---o                                 master - upstream/master
                  \
-                  o---o---o---o---o---o---o       develop
-                           \
-                            o---o                 topic
+                  \                   o---o       develop - upstream/develop
+                   \                 /
+                    o---o---o---o---o             origin/develop
+                             \
+                              o---o               topic
 
-If you have commits in your `develop` branch that you have not pushed yet, of
-that the maintainer has no integrated yet, probably you will obtain a merge
-commit and you will have to resolve any conflict that may appear.
+If you have commits in your `develop` branch that you have not pushed yet, or
+commits that you published but the maintainer has no integrated yet, probably
+you will obtain a merge commit and you will have to resolve any conflict that
+may appear.
 
         o---o---o                       master
                  \
@@ -1186,18 +1251,22 @@ commit and you will have to resolve any conflict that may appear.
                               o---o     topic
 
 Now that you have the last changes from the [Analyser][analysis-repo] repo,
-you can start working.
+you can start working in a new feature, or continue the work you already
+started in your `topic` branch.
 
 ### Working in a new feature
 
-If you will start to work in some new feature, it is recommended that you use
-a topic branch, and do all your work in there:
+Remember, developers work in their `develop` local branch. If you will start
+working in some new feature, it is recommended that you use a topic branch
+(instead of committing on your `develop` branch), and do all your work in
+there. Then, when you consider that it is done, you can put it back into your
+`develop` branch. So, to start a new topic branch:
 
     $ git checkout -b feature develop
 
-You can commit as recommended until you finish the feature. In the
-meantime you can update your `develop` branch with changes in the upstream
-repository:
+You can commit as you has been recommended (read *Simple daily workflow* and
+*Collaborating with Git* above) until you finish the feature. In the meantime
+you can update your `develop` branch with changes in the upstream repository:
 
        o---o---o---o---o---o           develop
                     \
@@ -1246,9 +1315,8 @@ If everything is OK, you will obtain the following:
                      o---o---o---o     feature
 
 But also you can get conflicts that you will have to resolve before complete
-the merge.
-
-You will not use anymore the `feature` branch, so it can be deleted:
+the merge. When everything is OK, you will not use anymore the `feature`
+branch, so it can be deleted:
 
     $ git branch -d feature
 
@@ -1274,7 +1342,7 @@ Anytime you can get all the new commits from the main line:
 
     $ git fetch upstream
 
-You can checkout the state of the upstream repo by doing
+You can checkout the state of the upstream `develop` branch by doing
 
     $ git checkout upstream/develop
 
