@@ -1,0 +1,5 @@
+output.tex
+*.aux
+*.log
+*.out
+*.toc
