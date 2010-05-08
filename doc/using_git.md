@@ -901,7 +901,7 @@ The command goes out to that remote project and pulls down all the data from
 that remote project that you don't have yet.
 
 When you have your project at a point that you want to share, you have to push
-it to your remote repository with: `git push [remote] [branch]`. To publish
+it to your remote repository with: `git push <remote> <branch>`. To publish
 your change in your private repository, you do
 
     $ git push origin master
@@ -912,7 +912,7 @@ Remote branches are references to the state of branches on your remote
 repositories. They're local branches that you can't move; they're moved
 automatically whenever you do any network communication.
 
-They take the form `(remote)/(branch)`. For instance, if you wanted to see what
+They take the form `<remote>/<branch>`. For instance, if you wanted to see what
 the `master` branch on your `origin` remote looked like as of the last time you
 communicated with it, you would check the `origin/master` branch.
 
